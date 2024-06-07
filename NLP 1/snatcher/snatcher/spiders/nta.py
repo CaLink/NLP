@@ -20,9 +20,6 @@ class NtaSpider(scrapy.Spider):
         self.saver.InitDir()
         self.saver.InitDB()
 
-
-
-
         yield scrapy.Request(
             self.pagin_url.format(page=self.page, count=self.cnt),
             callback=self.pagin_parser
@@ -56,7 +53,7 @@ class NtaSpider(scrapy.Spider):
         title = response.xpath('//article/h1/text()').get()
         
         content = response.xpath('//div[@class="news-detail"]/text()').getall()
-        content = ''.join(content).replace('\t', '').replace('\n', '')
+        content = ''.join(content).replace('\t', '').replace('\n', '').replace('\r', '').strip()
 
         date = dp.parse(response.xpath('//time[@class="news-date-time"]/@datetime')
                          .get()).strftime('%Y-%m-%d')
